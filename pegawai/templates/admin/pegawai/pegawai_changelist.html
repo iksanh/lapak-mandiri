@@ -1,0 +1,23 @@
+<!-- pegawai_app/templates/admin/pegawai/pegawai/change_list.html -->
+
+{% extends "admin/change_list.html" %} {% block object-tools %}
+<!-- custom button  -->
+{% if custom_buttons %}
+<div class="object-tools">
+  <ul class="object-tools">
+    <li>
+      <a href="{% url 'admin:import-csv' %}" class="button">Import CSV</a>
+    </li>
+    <li>
+      <a href="{% url 'admin:pegawai_with_koordinator' %}" class="button"
+        >Pegawai with Koordinator</a
+      >
+    </li>
+    <li>
+      <a href="{% url 'admin:pegawai_pegawai_add' %}" class="button"
+        >Add Pegawai</a
+      >
+    </li>
+  </ul>
+</div>
+{% endif %} {% endblock %}

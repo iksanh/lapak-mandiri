@@ -1,0 +1,39 @@
+<!-- pegawai_app/templates/pegawai_app/pegawai_with_koordinator.html -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pegawai with Koordinator Substansi</title>
+  </head>
+  <body>
+    <h1>Pegawai with Koordinator Substansi</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>NIP</th>
+          <th>Nama</th>
+          <th>Jabatan</th>
+          <th>Status</th>
+          <th>Pangkat/Golongan</th>
+          <th>Unit Kerja</th>
+          <th>Sub Unit Kerja</th>
+          <th>Koordinator Substansi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pegawai in pegawai_list %}
+        <tr>
+          <td>{{ pegawai.nip }}</td>
+          <td>{{ pegawai.nama }}</td>
+          <td>{{ pegawai.jabatan }}</td>
+          <td>{{ pegawai.status }}</td>
+          <td>{{ pegawai.pangkat_golongan }}</td>
+          <td>{{ pegawai.unit_kerja }}</td>
+          <td>{{ pegawai.sub_unit_kerja }}</td>
+          <td>{{ pegawai.get_koordinator_substansi_names }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>
