@@ -1,0 +1,96 @@
+{% extends "_base.html" %} {% block content %}
+<div
+  class="max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+>
+  <h1 class="font-medium">
+    {% if form.instance.pk %}Update{% else %}Create{% endif %} Koordinator
+    Substansi
+  </h1>
+  <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700" />
+  <form method="POST" class="max-w-sm">
+    {% csrf_token %}
+
+    <div class="mb-5">
+      <label
+        for="id_email"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >
+        Unit Kerja
+      </label>
+      {{ form.unit_kerja }}
+    </div>
+    <div class="mb-5">
+      <label
+        for="id_email"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >
+        Pegawai
+      </label>
+      {{ form.pegawai }}
+    </div>
+    <div class="mb-5">
+      <label
+        for="id_email"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >
+        Koordinator Substansi
+      </label>
+      {{ form.koordinator_substansi }}
+    </div>
+    <div class="mb-5">
+      <label
+        for="id_email"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >
+        Terhitung Mulai Tanggal
+      </label>
+      {{ form.tmt }}
+    </div>
+    <div class="mb-5">
+      <label
+        for="id_email"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >
+        Akhir
+      </label>
+      {{ form.akhir }}
+    </div>
+    <div class="mb-5">
+      <label
+        for="id_email"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >
+        Status
+      </label>
+      {{ form.status }}
+    </div>
+    <button
+      type="submit"
+      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+    >
+      Submit
+    </button>
+  </form>
+</div>
+<script>
+  let id_unit_kerja = document.getElementById("id_unit_kerja");
+
+  id_unit_kerja.addEventListener("change", function () {
+    var unitKerjaId = this.value;
+
+    fetch(`/api/pegawaiselect/?unit_kerja=${unitKerjaId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        var pegawaiSelect = document.getElementById("id_pegawai");
+        pegawaiSelect.innerHTML = "";
+
+        data.forEach(function (pegawai) {
+          var option = document.createElement("option");
+          option.value = pegawai.id;
+          option.text = pegawai.nama;
+          pegawaiSelect.add(option);
+        });
+      });
+  });
+</script>
+{% endblock content%}

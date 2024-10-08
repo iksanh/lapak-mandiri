@@ -1,0 +1,42 @@
+{% extends "_base.html" %} {% block content %}
+
+<!-- begin for  -->
+<div class="max-w-7xl mx-auto py-10 px-6">
+  <h1 class="text-4xl font-extrabold mb-8 text-blue-700 text-center">
+    Daftar Layanan
+  </h1>
+  <div class="flex flex-col gap-2 w-full">
+    {% for service in layanan %}
+    <div
+      class="bg-white shadow-md rounded-lg p-6 border border-blue-200 flex gap-2 justify-between"
+    >
+      <span class="text-md font-bold text-gray-800 mb-2"
+        >{{ service.nama }}</span
+      >
+
+      <p class="text-gray-600 mb-4">
+        Waktu:
+        <span class="font-semibold"
+          >{{ service.waktu_mulai|date:"d/m/Y" }}
+          <!-- filter time  -->
+          {{ service.waktu_mulai|time:"H:i" }} s.d
+          <!-- end waktu  -->
+          {{ service.waktu_selesai|date:"d/m/Y"}}
+
+          <!-- Filter time  -->
+          {{ service.waktu_selesai|time:"H:i"}}
+        </span>
+      </p>
+
+      <!-- Button to select service -->
+      <a
+        href="{% url 'pengajuan_create' service.id%}"
+        class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-500 transition focus:outline-none focus:ring-4 focus:ring-blue-300"
+      >
+        Pilih Layanan
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}

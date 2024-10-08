@@ -1,0 +1,10 @@
+{% extends "_base.html" %} {% block content %}
+<h1>{{ pegawai.nama }}</h1>
+<p>NIP: {{ pegawai.nip }}</p>
+<p>Jabatan: {{ pegawai.jabatan }}</p>
+<p>Status: {{ pegawai.status }}</p>
+<a href="{% url 'pegawai_update' pegawai.pk %}">Edit</a> |
+<a href="{% url 'pegawai_delete' pegawai.pk %}">Delete</a> |
+<a href="{% url 'pegawai_list' %}">Back to List</a>
+
+{% endblock content %}

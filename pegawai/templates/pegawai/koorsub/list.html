@@ -1,0 +1,162 @@
+{% extends "_base.html" %} {% block content %}
+<div class="relative space-y-2">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-semibold py-2">Koordinator Substansi</h2>
+
+    <div class="flex items-center gap-4">
+      <form
+        method="GET"
+        action="{% url 'koorsub_index' %}"
+        class="flex items-center gap-2"
+      >
+        <input
+          type="text"
+          name="pegawai"
+          value="{{ search_pegawai }}"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Search Pegawai"
+        />
+
+        <select name="unit_kerja" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          <option value="">Select Unit Kerja</option>
+          {% for unit in unit_kerja_list %}
+            <option value="{{ unit.unit_kerja_id}}" {% if search_unit_kerja == unit.unit_kerja_id %}selected{% endif %}>
+              {{ unit.nama_unit_kerja }}
+            </option>
+          {% endfor %}
+        </select>
+
+        <input
+          type="text"
+          name="koordinator_substansi"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Search Koordinator Substansi"
+        />
+
+        <button
+          type="submit"
+          class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
+        >
+          Search
+        </button>
+      </form>
+
+      <a
+        href="{% url 'koorsub_create' %}"
+        class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
+      >
+        Tambah Koorsub
+      </a>
+    </div>
+  </div>
+
+  <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700" />
+  <div class="relative overflow-x-auto shadow-md sm:rounded-lg mb-4 mt-4">
+    <table
+      class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mb-3"
+    >
+      <thead
+        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+      >
+        <tr>
+          <th scope="col" class="px-6 py-3">Unit Kerja</th>
+          <th scope="col" class="px-6 py-3">Pegawai</th>
+          <th scope="col" class="px-6 py-3">Koordinator Substansi</th>
+
+          <th scope="col" class="px-6 py-3">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for kr in koorsub%}
+        <tr
+          class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+        >
+          <th
+            scope="row"
+            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          >
+            {{ kr.unit_kerja}}
+          </th>
+          <th
+            scope="row"
+            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          >
+            {{ kr.pegawai}}
+          </th>
+          <th class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+            {{ kr.koordinator_substansi}}
+          </th>
+
+          <td class="px-6 py-4">
+            <a
+              href="{% url 'koorsub_update' kr.id %}"
+              class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              >Edit</a
+            >
+            <a
+              href="{% url 'koorsub_delete' kr.id %}"
+              class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              >delete</a
+            >
+          </td>
+        </tr>
+        {% endfor%}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-8 pt-7">
+    <nav class="flex justify-center">
+      <ul class="inline-flex -space-x-px">
+        <!-- bagin if  -->
+
+        <li>
+          <a
+            href="{% if koorsub.has_previous %}?page={{ koorsub.previous_page_number }}{% else %}#{% endif %}"
+            class="px-3 py-2 ml-0 leading-tight border rounded-l-lg {% if koorsub.has_previous %} text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white {% else %} text-gray-400 bg-gray-200 border-gray-300 cursor-not-allowed {% endif %}"
+          >
+            Previous
+          </a>
+        </li>
+
+        <!-- endif -->
+        <!-- begin loop  -->
+        {% for num in koorsub.paginator.page_range %}
+        <!-- begin if  -->
+        {% if num > koorsub.number|add:'-3' and num < koorsub.number|add:'3' %}
+        <!-- begin if  -->
+        {% if koorsub.number == num %}
+        <li>
+          <a
+            href="?page={{ num }}"
+            class="px-3 py-2 leading-tight text-blue-600 bg-blue-50 border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+            >{{ num }}</a
+          >
+        </li>
+        {% else %}
+        <li>
+          <a
+            href="?page={{ num }}"
+            class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            >{{ num }}</a
+          >
+        </li>
+        {% endif %}
+        <!-- end if  -->
+        {% endif %}
+        <!-- end for  -->
+        {% endfor %} {% if koorsub.has_next %}
+        <li>
+          <a
+            href="?page={{ koorsub.next_page_number }}"
+            class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            >Next</a
+          >
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
+
+{% endblock content %}

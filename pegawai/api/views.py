@@ -32,7 +32,7 @@ class PegawaiSelectViewSet(viewsets.ModelViewSet):
         queryset=  Pegawai.objects.all()
         unit_kerja = self.request.query_params.get('unit_kerja')
         if unit_kerja:
-            queryset = queryset.filter(unit_kerja=unit_kerja)
+            queryset = queryset.filter(unit_kerja=unit_kerja).exclude(jabatan__icontains='kepala')
 
         return queryset
 

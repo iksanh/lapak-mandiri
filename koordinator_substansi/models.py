@@ -6,7 +6,9 @@ from unit_kerja.models import SubUnitKerja
 class KoordinatorSubstansi(models.Model):
     koorsub_id = models.AutoField(primary_key=True)
     nama = models.CharField(max_length=255)
+    tingkat = models.CharField(max_length=50, default=None)
     sub_unit_kerja = models.ForeignKey(SubUnitKerja, on_delete=models.CASCADE, null=True, default=None)
+
     
 
     

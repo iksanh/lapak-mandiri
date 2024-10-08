@@ -1,0 +1,122 @@
+{% extends "_base.html" %} {% load static %} {% block content %}
+
+<div class="flex gap-2 flex-col mb-2">
+  <div class="flex justify-between mb-2">
+    <h2 class="text-xl basis-1/2">Pegawai</h2>
+    <div class="flex gap-2 w-full basis-2/3 justify-end">
+      <form class="flex gap-2">
+        <select
+          id="kantor"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          name="kantor"
+        >
+        <option value="" {% if not kantor_value %}selected{% endif %}>Semua Kantor</option>
+        {% for k in kantor %}
+            <option value="{{ k.nama_unit_kerja }}" {% if k.nama_unit_kerja == kantor_value %}selected{% endif %}>
+                {{ k.nama_unit_kerja }}
+            </option>
+        {% endfor %}
+      </select>
+        <button
+          class="px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          Cari
+        </button>
+      </form>
+
+      <a
+      href="{% url 'pegawai_create' %}"
+      class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg shadow-lg hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 "
+    >
+      Tambah Pegawai
+    </a>
+    
+    </div>
+  </div>
+  <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700" />
+  <div class="relative overflow-x-auto mb-4">
+    <table
+      class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+    >
+      <thead
+        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+      >
+        <tr>
+          <th scope="col" class="px-6 py-4">Nama</th>
+          <th scope="col" class="px-6 py-4">Nip</th>
+          <th scope="col" class="px-6 py-4">Pangkat</th>
+          <th scope="col" class="px-6 py-4">Jabatan</th>
+          <th scope="col" class="px-6 py-4">Unit Kerja</th>
+          <th scope="col" class="px-6 py-4">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in pegawai %}
+        <tr
+          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-800"
+        >
+          <td class="px-6 py-4">{{p.nama}}</td>
+          <td class="px-6 py-4">{{p.nip}}</td>
+          <td class="px-6 py-4">{{p.pangkat_golongan}}</td>
+          <td class="px-6 py-4">{{p.jabatan}}</td>
+          <td class="px-6 py-4">{{p.unit_kerja}}</td>
+          <td class="px-6 py-4">
+            <a
+              href="{% url 'pegawai_update' p.id %}"
+              class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              >Edit</a
+            >
+            <a
+              href="{% url 'pegawai_delete' p.id %}"
+              class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              >delete</a
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="mt-4">
+    <nav class="flex justify-center">
+      <ul class="inline-flex -space-x-px">
+        <!-- Previous Page Link -->
+        <li>
+          <a
+            href="{% if pegawai.has_previous %}?page={{ pegawai.previous_page_number }}{% if kantor_value %}&kantor={{ kantor_value }}{% endif %}{% endif %}"
+            class="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          >
+            Previous
+          </a>
+        </li>
+
+        <!-- Page Number Links -->
+        {% for num in pegawai.paginator.page_range %}
+        <!-- paginator  -->
+        {% if num > pegawai.number|add:'-3' and num < pegawai.number|add:'3' %}
+        <li>
+          <a
+            href="?page={{ num }}{% if kantor_value %}&kantor={{ kantor_value }}{% endif %}"
+            class="px-3 py-2 leading-tight {% if pegawai.number == num %}text-blue-600 bg-blue-50{% else %}text-gray-500 bg-white{% endif %} border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+          >
+            {{ num }}
+          </a>
+        </li>
+        {% endif %} {% endfor %}
+
+        <!-- Next Page Link -->
+        {% if pegawai.has_next %}
+        <li>
+          <a
+            href="?page={{ pegawai.next_page_number }}{% if kantor_value %}&kantor={{ kantor_value }}{% endif %}"
+            class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          >
+            Next
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
+{% endblock content %}
